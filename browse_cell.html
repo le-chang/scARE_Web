@@ -1,0 +1,110 @@
+<!--
+@author [Wankun Deng]
+@email [dengwankun@gmail.com]
+@create date 2023-05-11 16:30:23
+@modify date 2023-07-13 10:35:27
+@desc [description]
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="single cell Atlas of Retrotransposable Elements">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+
+    <meta name=""author" content="Wankun Deng">
+
+  <title>Browse by Cell</title> 
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <style>
+  @import url('css/highcharts.css');
+  @import url('css/te_table.css');
+  a {
+  text-decoration: none;
+  background-color: white;
+ }
+  
+  </style>
+</head>
+
+<style>
+ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}  
+  #Mic {
+    display: inline-block;
+    width: 5em;
+  }
+</style>
+
+<script src="js/third_party/highcharts.js"></script>
+<script src="js/third_party/data.js"></script>
+<script src="js/third_party/drilldown.js"></script>
+<script src="js/third_party/exporting.js"></script>
+<script src="js/third_party/export-data.js"></script>
+<script src="js/third_party/accessibility.js"></script>
+<script type="text/javascript" src="js/third_party/jquery-3.7.0.js"></script>
+<script src="js/third_party/d3.v7.min.js"> import * as d3 from "d3"</script>
+<script src="js/third_party/forceGraph.js"> </script>
+<script src="js/third_party/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/utils.js"></script>
+<script type="text/javascript" src="js/third_party/jquery.maphilight.min.js"></script>
+<script type="text/javascript" src="js/third_party/imageMapResize.js"></script>
+<script type="text/javascript">
+        $(function () {
+            $('map').imageMapResize();
+            $('.mappingjq').maphilight();
+        });
+    </script>
+<body onload="init()" >
+    <div w3-include-html="navigation.html" style="height:100px"></div>
+<div id="container" style="width: 60%; min-width: 1100px; margin-block: 110px;" class="container-fluid">
+    <div class="card mb-3">
+        <div class="card-header"><strong>Brain Cells</strong></div>
+        <div class="card-body" id="desc">
+        </div>
+    </div>
+
+    <div class="row" >
+        <div class="col-xl-12" id="cell_demo">
+            <div class="card mb-3">
+                <div class="card-header"><strong>Choose a Cell Type to View</strong></div>
+            <div class="card-body " style="align-items: center;">
+                <img src="images/Slide3_1280.png" alt="brain_cells" usemap="#cellmap" class='mappingjq' width="100%" alt="CELL MAP">
+                <map name="cellmap">
+                    <area  id='Mic' title="Microglia" shape="poly" coords="65,198,40,300,70,400,90,500,230,530,290,490,290,390,250,270,170,160" alt="Microglia" href="cell_detail.html?Cate=Cell&KW=Mic" target="_blank">
+                    <area  id='In' title="Inhibitory Neuron" shape="poly" coords="264,265,312,332,411,311,448,265,438,198,509,153,601,125,761,98,875,129,986,261,1027,309,1125,358,1073,180,1020,47,339,15,259,42,240,204" alt="Inhibitory Neuron" href="cell_detail.html?Cate=Cell&KW=In" target="_blank">
+                    <area  id='Ex' title="Excitatory Neuron" shape="poly" coords="344,353,412,426,475,482,572,470,667,461,773,482,855,483,845,350,994,312,1039,387,1111,375,1205,505,1046,696,874,666,826,573,374,627,304,568" alt="Excitatory Neuron" href="cell_detail.html?Cate=Cell&KW=Ex" target="_blank">
+                    <area  id='Oli' title="Oligodendrocyte" shape="poly" coords="602,135,510,202,528,295,653,297,734,464,832,468,815,314,755,118" alt="Oligodendrocyte" href="cell_detail.html?Cate=Cell&KW=Oli" target="_blank">
+                    <area  id='Ast' title="Astrocyte" shape="poly" coords="457,268,412,334,429,408,469,467,555,465,598,380,635,317,579,292,520,303,500,256" alt="Astrocyte" href="cell_detail.html?Cate=Cell&KW=Ast" target="_blank">
+                </map>  
+            </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    const uparams = new URLSearchParams(window.location.search);
+    function init(){
+        var content_only=uparams.get('CL')
+        if(content_only==null || content_only=='' || content_only=='F'){
+          includeHTML('nav_browse');
+        }
+        $.get('cgi/get_cell_desc.py',{Cell: 'BrainCell'},
+            function(response){
+                document.getElementById('desc').style.display='block'
+                $('#desc').html(response)
+            }
+        );
+        // $('.mappingjq').maphilight();
+        // $('map').imageMapResize();
+    }
+</script>
+<div w3-include-html="footer.html"></div>
+</body>

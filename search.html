@@ -1,0 +1,212 @@
+<!--
+@author [Wankun Deng]
+@email [dengwankun@gmail.com]
+@create date 2023-04-27 15:32:56
+@modify date 2023-07-13 10:34:02
+@desc [description]
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="" author" content="Wankun Deng">
+  <meta name="description" content="single cell Atlas of Retrotransposable Elements">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+
+  <title>Search</title>
+  <style>
+    @import url('css/highcharts.css');
+  </style>
+  <link href="css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/jquery.dataTables.css" />
+  <style>
+    @import url('css/te_table.css');
+  </style>
+</head>
+<script type="text/javascript" src="js/third_party/jquery-3.7.0.js"></script>
+<script src="js/third_party/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/utils.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="js/third_party/jquery.dataTables.js"></script>
+
+
+<body onload="init()">
+  <div w3-include-html="navigation.html" style="height:100px"></div>
+  <div id="container0" style="width: 60%; min-width: 1100px; margin-block: 110px;" class="container-fluid">
+    <div class="card mb-3" id="simple_section">
+      <div class="card-header"><strong><span id="desc_header"></span>Search Single Term</strong></div>
+      <div class="card-body" id="desc">
+        <div id="search">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="simple_field">Search field:</label>
+            </div>
+            <select class="custom-select" id="simple_field">
+              <option value='RTE' selected>RTE</option>
+              <option value='Gene'>Gene</option>
+              <option value='Disease'>Disease</option>
+              <!--<option value='Cell'>Cell</option>-->
+              <option value='Dataset'>Dataset</option>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="simple_kw">Keyword:</label>
+            </div>
+            <input type="text" id="simple_kw" class="form-control" placeholder="Keyword" aria-label="simple_kw"
+              aria-describedby="basic-addon1">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-text">
+              <input type="checkbox" id="simple_lucky" aria-label="I feel lucky"> <span><strong>&nbsp;&nbsp;I'm feeling
+                  lucky!</strong></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-2">
+              <input type="button" value="Search" class="btn btn-primary" onclick="simple_search()">
+            </div>
+            <div class="col-2"><input type="button" value="Example" class="btn btn-info" onclick="example_simple()">
+            </div>
+            <div class="col-2"><input type="button" value="Reset" class="btn btn-warning"
+                onclick="reset_field('simple_field');reset_kw('simple_kw');reset_check('simple_lucky')"> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3" id="multiple_section">
+      <div class="card-header"><strong><span></span>Search Multiple Terms</strong></div>
+      <div class="card-body">
+        <div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="multi_field">Search field:</label>
+            </div>
+            <select class="custom-select" id="multi_field">
+              <option value='RTE' selected>RTE</option>
+              <option value='Gene'>Gene</option>
+              <option value='Disease'>Disease</option>
+              <!--<option value='Cell'>Cell</option>-->
+              <option value='Dataset'>Dataset</option>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="bool_rel">Matches </label>
+            </div>
+            <select class="custom-select" id="bool_rel">
+              <option value='Any' selected>Any</option>
+              <option value='All'>All</option>
+            </select>
+            <div class="input-group-append">
+              <span class="input-group-text">of the Following:</span>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="multi_kw">Keyword:</label>
+            </div>
+            <textarea rows=4 type="text" id="multi_kw" style="align-content: justify;" class="form-control"
+              placeholder="Keywords by lines" aria-label="multi_kw" aria-describedby="basic-addon1"></textarea>
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-text">
+              <input type="checkbox" id="multi_lucky" aria-label="I feel lucky"> <span><strong>&nbsp;&nbsp;I'm feeling
+                  lucky!</strong></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-2">
+              <input type="button" value="Search" class="btn btn-primary" onclick="multi_search()">
+            </div>
+            <div class="col-2 justify-content-center"><input type="button" value="Example" class="btn btn-info"
+                onclick="example_multi()">
+            </div>
+            <div class="col-2 justify-content-start"><input type="button" value="Reset" class="btn btn-warning"
+                onclick="reset_field('multi_field');reset_kw('multi_kw');document.getElementById('bool_rel').selectedIndex=0;reset_check('multi_lucky')"> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" id="result_row" style="display: none;">
+      <div class="col-xl-12" id="result_col">
+        <div class="card mb-3">
+          <div class="card-header"><strong>Search Result</strong></div>
+          <div class="card-body" id="result"> </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+    <script type="text/javascript">
+      function simple_search() {
+        const field = document.getElementById("simple_field").value;
+        const kw = document.getElementById("simple_kw").value;
+        const lucky = document.getElementById("simple_lucky").checked;
+        $.get("cgi/search.py", { field: field, kw: kw, type:'simple',lucky: lucky}, function (data) {
+          document.getElementById("result_row").style.display = "block";
+          document.getElementById("multiple_section").style.display = "none";
+          document.getElementById("result").innerHTML = data;
+          let table = new DataTable('#result_table', {response:true});  
+        });
+      }
+      function reset_field(field_id) {
+        document.getElementById(field_id).selectedIndex = 0;
+      }
+      function reset_kw(kw_id) {
+        document.getElementById(kw_id).value = "";
+      }
+      function reset_check(check_id) {
+        document.getElementById(check_id).checked = false;
+      }
+      function example_simple() {
+        document.getElementById("simple_field").selectedIndex = 0;
+        document.getElementById("simple_kw").value = "AluY";
+        simple_search();
+      }
+      function example_multi() {
+        document.getElementById("multi_field").selectedIndex = 0;
+        document.getElementById("multi_kw").value = "AluY\nAluSx\nAluSx1";
+        document.getElementById("bool_rel").selectedIndex = 0;
+        document.getElementById("multi_lucky").checked = false;
+        multi_search();
+      }
+      function multi_search(){
+        const field = document.getElementById("multi_field").value;
+        const kw = document.getElementById("multi_kw").value;
+        const bool_rel = document.getElementById("bool_rel").value;
+        const lucky = document.getElementById("multi_lucky").checked;
+        $.get("cgi/search.py", { field: field, kw: kw, bool_rel: bool_rel, type: 'multi',lucky:lucky}, function (data) {
+          document.getElementById("result_row").style.display = "block";
+          document.getElementById("simple_section").style.display = "none";
+          document.getElementById("result").innerHTML = data;
+          let table = new DataTable('#result_table', {response:true});  
+        });
+      }
+      function init() {
+        includeHTML('nav_search');
+        $('#container').css('min-height',$(document).height()-280)
+        const urlParams = new URLSearchParams(window.location.search);
+        var kw=urlParams.get('KW');
+        if(kw!=null){
+          var field=0;//urlParams.get('Field');
+          document.getElementById("simple_field").selectedIndex = field;
+          document.getElementById("simple_kw").value = kw;
+          simple_search();
+        }
+      }
+    </script>
+    <div id="container" style="width: 60%; min-width: 1100px; margin-block: 100px;" class="container-fluid"></div>
+    <div w3-include-html="footer.html"></div>
+</body>

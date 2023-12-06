@@ -1,0 +1,187 @@
+<!--
+@author [Wankun Deng]
+@email [dengwankun@gmail.com]
+@create date 2023-04-27 15:32:36
+@modify date 2023-07-13 10:36:07
+@desc [description]
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name=""author" content="Wankun Deng">
+    <meta name="description" content="single cell Atlas of Retrotransposable Elements">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+
+  <title>Browse by disease</title>  
+  <link href="css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/jquery.dataTables.css" />
+  <style>
+  @import url('css/highcharts.css');
+  @import url('css/te_table.css');
+  caption {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    color: #000000;
+    text-align: left;
+    caption-side: bottom;
+}
+  </style>
+</head>
+
+<style>
+ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}  
+</style>
+
+<script type="text/javascript" src="js/third_party/jquery-3.7.0.js"></script>
+<script src="js/third_party/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/utils.js"></script>
+<script src="js/third_party/jquery.dataTables.js"></script>
+
+<body onload="init()" >
+    <div w3-include-html="navigation.html" style="height:100px"></div>
+    <div id="container" style="width: 60%; min-width: 1100px; margin-block: 110px;" class="container-fluid">
+    <div class="row" >
+        <div class="col" id="alzheimer_col">
+            <div class="card mb-3">
+                <div class="card-header" >
+                    <div><strong><span id="desc_header"></span>Alzheimer's Disease (AD):&nbsp;&nbsp;&nbsp;</strong><a onclick="getDataset('AD');" class="btn btn-info">View All AD Dataset</a></div>          
+                    </div>
+                <div class="card-body mr-0 ml-0 pl-0 pr-0">
+                    <table class="table table-stripped"><tbody>
+                        <tr><th>Disease</th><td>Alzheimer's disease</td>
+                        </tr>
+                        <tr><th>Definition</th><td>A tauopathy that is characterized by memory lapses, confusion, emotional instability and progressive loss of mental ability and results in progressive memory loss, impaired thinking, 
+                            disorientation, and changes in personality and mood starting and leads in advanced cases to a profound decline in cognitive and physical functioning and is marked histologically by the degeneration of brain 
+                            neurons especially in the cerebral cortex and by the presence of neurofibrillary tangles and plaques containing beta-amyloid.</td>
+                        </tr>
+                        <tr><th>Synonym</th><td>
+                            <button type="button" class="btn btn-primary mb-1">
+                                Alzheimer's disease 
+                              </button><br/>
+                            <button type="button" class="btn btn-secondary mb-1">Alzheimer disease</button><br/>
+                            <button type="button" class="btn btn-secondary mb-1">Alzheimer's dementia</button><br/>
+                            <button type="button" class="btn btn-secondary mb-1">Alzheimer dementia</button><br/>
+                            <button type="button" class="btn btn-secondary mb-1">AD</button>
+                        </td></tr>
+                        <tr><th>Cross reference</th><td>
+                           <a href='https://www.ebi.ac.uk/ols4/ontologies/ncit/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_C2866' target="_blank"> OLS4</a><br/>
+                           <a href='https://www.ncbi.nlm.nih.gov/medgen/C0002395' target="_blank">MedGen</a><br/>
+                           <a href="https://rarediseases.info.nih.gov/diseases/10254/index" target="_blank">GARD</a><br/>
+                           <a href='https://disease-ontology.org/term/DOID:10652/obo/' target="_blank">Disease Ontology</a><br/>
+                           <a href='https://www.alliancegenome.org/disease/DOID:10652' target="_blank">Alliance of Genome Resources</a><br/>
+                           <a href="https://omim.org/entry/104300" target="_blank">OMIM®</a>
+                        </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col" id="pakinson">
+            <div class="card mb-3">
+                <div class="card-header" > <div><strong><span id="desc_header1"></span>Parkinson's Disease (PD):&nbsp;&nbsp;&nbsp;</strong><a onclick="getDataset('PD');" class="btn btn-info">View All PD Dataset</a></div></div>
+                <div class="card-body mr-0 ml-0 pl-0 pr-0">
+                    <table class="table table-stripped"><tbody>
+                        <tr><th>Disease</th><td>Parkinson's disease</td>
+                        </tr>
+                        <tr><th>Definition</th><td>A progressive degenerative disorder of the central nervous system characterized by loss of dopamine producing neurons in the substantia nigra and the presence of Lewy bodies 
+                            in the substantia nigra and locus coeruleus. Signs and symptoms include tremor which is most pronounced during rest, muscle rigidity, slowing of the voluntary movements, a tendency to fall back, and a mask-like facial expression.
+                        </td>
+                        </tr>
+                        <tr><th>Synonym</th><td>
+                            <button type="button" class="btn btn-primary mb-1">
+                                Parkinson's disease 
+                              </button><br/>
+                            <button type="button" class="btn btn-secondary mb-1">Parkinson disease</button><br/>
+                            <button type="button" class="btn btn-secondary mb-1">PD</button>
+                        </td></tr>
+                        <tr><th>Cross reference</th><td>
+                           <a href='https://www.ebi.ac.uk/ols4/ontologies/ncit/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_C26845' target="_blank"> OLS4</a><br/>
+                           <a href='https://www.ncbi.nlm.nih.gov/medgen/C0030567' target="_blank">MedGen</a><br/>
+                           <a href="https://rarediseases.info.nih.gov/diseases/10251/index" target="_blank">GARD</a><br/>
+                           <a href='https://disease-ontology.org/term/DOID:14330/obo/' target="_blank">Disease Ontology</a><br/>
+                           <a href='https://www.alliancegenome.org/disease/DOID:14330' target="_blank">Alliance of Genome Resources</a><br/>
+                           <a href="https://omim.org/entry/168600" target="_blank">OMIM®</a>
+                        </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col" id="multiple-sclerosis">
+            <div class="card mb-3">
+                <div class="card-header" > <div><strong><span id="desc_header2"></span>Multiple Sclerosis (MS):&nbsp;&nbsp;&nbsp;</strong><a onclick="getDataset('MS');" class="btn btn-info">View All MS Dataset</a></div></div>
+                <div class="card-body mr-0 ml-0 pl-0 pr-0">
+                    <table class="table table-stripped"><tbody>
+                        <tr><th>Disease</th><td>Multiple sclerosis</td>
+                        </tr>
+                        <tr><th>Definition</th><td>A disorder of the central nervous system marked by weakness, numbness, a loss of muscle coordination, and problems with vision, speech, and bladder control. Multiple sclerosis is thought 
+                            to be an autoimmune disease in which the body's immune system destroys myelin. Myelin is a substance that contains both protein and fat (lipid), serving as a nerve insulator and helping in the transmission of nerve signals.
+
+                        </td>
+                        </tr>
+                        <tr><th>Synonym</th><td>
+                            <button type="button" class="btn btn-primary mb-1">
+                                Multiple sclerosis
+                              </button><br/>
+                            <button type="button" class="btn btn-secondary mb-1">MS</button>
+                        </td></tr>
+                        <tr><th>Cross reference</th><td>
+                           <a href='https://www.ebi.ac.uk/ols4/ontologies/ncit/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_C3243' target="_blank"> OLS4</a><br/>
+                           <a href='https://www.ncbi.nlm.nih.gov/medgen/C0026769' target="_blank">MedGen</a><br/>
+                           <a href="https://rarediseases.info.nih.gov/diseases/10255/index" target="_blank">GARD</a><br/>
+                           <a href='https://disease-ontology.org/term/DOID:2377/obo/' target="_blank">Disease Ontology</a><br/>
+                           <a href='https://www.alliancegenome.org/disease/DOID:2377' target="_blank">Alliance of Genome Resources</a><br/>
+                           <a href="https://omim.org/entry/126200" target="_blank">OMIM®</a>
+                        </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="view_result">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row" >
+                        <div class="col" id="alzheimer_ds">
+                            <div class="card mb-3">
+                                <div class="card-header" >
+                                    <div><strong><span id="result_header">All Dataset with Disease Samples</span></strong></div>          
+                                    <div class="card-body" id="result_container">datatable here</div>
+                                </div>
+                            </div>            
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function init(){
+        includeHTML('nav_browse');
+    }
+    function getDataset(disease){
+        $('#result_header').html('All Dataset with <strong>'+disease+'</strong> Samples');
+        document.getElementById("result_container").innerHTML = 'Loading...';
+        $.get("/scARE/cgi/search.py", { field: 'Disease', kw: disease, type:'simple',lucky: false}, function (response) {
+          document.getElementById("result_container").innerHTML = response;
+          let table = new DataTable('#result_table', {response:true});  
+        });
+        $('#view_result').modal();
+        
+    }
+</script>
+<div w3-include-html="footer.html"></div>
+</body>

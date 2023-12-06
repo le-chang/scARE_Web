@@ -1,0 +1,90 @@
+<!--
+@author [Wankun Deng]
+@email [dengwankun@gmail.com]
+@create date 2023-05-11 16:30:23
+@modify date 2023-07-13 10:35:50
+@desc [description]
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="single cell Atlas of Retrotransposable Elements">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name=""author" content="Wankun Deng">
+  <title>Browse by Dataset</title>
+   <link href="css/bootstrap.min.css" rel="stylesheet"/>
+   <link rel="stylesheet" href="css/jquery.dataTables.css" /> 
+  <style>
+    @import url('css/te_table.css');
+    @import url('css/highcharts.css');
+    /* @import url('css/te_tree.css'); */
+  </style>
+</head>
+<style>
+    ul {
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    }  
+</style>
+
+
+<script type="text/javascript" src="js/third_party/jquery-3.7.0.js"></script>
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"> import * as d3 from "d3"</script-->
+<script src="js/third_party/d3.v7.min.js"> import * as d3 from "d3"</script>
+<script src="js/third_party/treemap.js"> </script>
+<script src="js/third_party/bootstrap.bundle.min.js" ></script>
+<script src="js/third_party/bootstrap.min.js" ></script>
+<script type="text/javascript" src="js/utils.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="js/third_party/jquery.dataTables.js"></script>
+
+<body onload="init()">
+    <div w3-include-html="navigation.html" style="height:100px"></div>
+<div id="container" style="width: 60%; min-width: 1100px; margin-block: 110px;" class="container-fluid">
+    <div class="card mb-3">
+        <div class="card-header"><strong>Description</strong></div>
+        <div class="card-body" id="desc">
+            In this page, all of 11 datasets included in scARE are listed.
+        </div>
+    </div>
+
+    <div class="row" >
+        <div class="col-xl-12" id="cell_demo">
+            <div class="card mb-3">
+            <div class="card-header"><strong>Choose a dataset to View</strong></div>
+            <div class="card-body " style="align-items: center;" id="datasets"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    const uparams = new URLSearchParams(window.location.search);
+
+    
+    function init(){
+        var content_only=uparams.get('CL')
+        if(content_only==null || content_only=='' || content_only=='F'){
+          includeHTML('nav_browse');
+        }
+        // $.get('/scARE/cgi/get_cell_desc.py',{Cell: 'AllDataset'},
+        //     function(response){
+        //         document.getElementById('desc').style.display='block'
+        //         $('#desc').html(response)
+        //     }
+        // );
+        $.get('/scARE/cgi/get_all_dataset.py',{},
+            function(response){
+                $('#datasets').html(response)
+                let table = new DataTable('#ds_table', {response:true, dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print']});        
+                    
+            }
+        );
+    }
+</script>
+<div w3-include-html="footer.html"></div>
+</body>
